@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling >= 1.26", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["reef-cli"]
+
+[project]
+dynamic = ["version"]
+name = "reef-cli"
+requires-python = ">= 3.8"
+authors = [
+  {name = "Tom Carter", email = "tomcarter017+reef-cli@gmail.com"},
+]
+readme = "README.md"
+description = "CLI for Reef"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Quality Assurance",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "pytest"
+]
+
+[project.urls]
+Repository = "https://github.com/reefbot/reef-cli.git"
+Issues = "https://github.com/reefbot/reef-cli/issues"
