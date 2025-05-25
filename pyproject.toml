@@ -11,7 +11,7 @@ packages = ["reef-cli"]
 [project]
 dynamic = ["version"]
 name = "reef-cli"
-requires-python = ">= 3.8"
+requires-python = ">= 3.9"
 authors = [
   {name = "Tom Carter", email = "tomcarter017+reef-cli@gmail.com"},
 ]
@@ -29,10 +29,14 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = []
+dependencies = [
+    "click",
+    "python-dotenv",
+    "langchain-anthropic"
+]
 
 [project.optional-dependencies]
-test = [
+dev = [
     "pytest"
 ]
 
