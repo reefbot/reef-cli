@@ -1,6 +1,7 @@
 import pathlib
 
 from dataclasses import dataclass
+import typing as ty
 
 
 @dataclass
@@ -13,7 +14,7 @@ class ImportNode:
 
 
 @dataclass
-class FuncNode:
+class CandidateNode:
     name: str
     params: str
     body: str
@@ -24,21 +25,16 @@ class FuncNode:
         str  # (where in the project it exists) i.e. src.module.module.definition + name
     )
     file_path: pathlib.Path  # directory of definition
+    CANDIDATE_TYPE: ty.ClassVar[str]
     # parents: list["Node"]
     # children: list["Node"]
 
 
 @dataclass
-class ClassNode:
-    name: str
-    body: str
-    code: str
-    line_number_start: int
-    line_number_end: int
-    qualified_name: (
-        str  # (where in the project it exists) i.e. src.module.module.definition + name
-    )
-    file_path: pathlib.Path  # directory of definition
+class FuncNode(CandidateNode):
+    CANDIDATE_TYPE: ty.ClassVar[str] = "FUNC"
 
-    # parents: list["Node"]
-    # children: list["Node"]
+
+@dataclass
+class ClassNode(CandidateNode):
+    CANDIDATE_TYPE: ty.ClassVar[str] = "CLASS"
