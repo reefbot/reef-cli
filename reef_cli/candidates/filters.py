@@ -1,5 +1,5 @@
 import typing as ty
-from dep_graph.nodes import CandidateNode
+from reef_cli.candidates.candidate import CandidateNode
 
 
 class CandidateFilter(ty.Protocol):
@@ -7,7 +7,7 @@ class CandidateFilter(ty.Protocol):
     def __call__(self, candidate: CandidateNode) -> bool:
         ...
 
-class PassThroughFilter(ty.Protocol):
+class PassThroughFilter(CandidateFilter):
     """Filter that doesn't remove any candidates."""
     def __call__(self, candidate: CandidateNode) -> bool:
         return True

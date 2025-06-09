@@ -1,22 +1,11 @@
 import pathlib
-
-from dataclasses import dataclass
 import typing as ty
-
-
-@dataclass
-class ImportNode:
-    name: str
-    origin: str
-    file_path: pathlib.Path
-    qualified_name: str
-    alias: str = ""
+from dataclasses import dataclass
 
 
 @dataclass
 class CandidateNode:
     name: str
-    params: str
     body: str
     code: str
     line_number_start: int

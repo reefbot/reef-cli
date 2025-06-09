@@ -1,5 +1,5 @@
 import typing as ty
-from dep_graph.nodes import CandidateNode
+from reef_cli.candidates.candidate import CandidateNode
 
 
 class CandidateScorer(ty.Protocol):

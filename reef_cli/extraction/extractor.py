@@ -5,18 +5,19 @@ from libcst.metadata import ParentNodeProvider, PositionProvider
 
 import typing as ty
 
-from .nodes import ImportNode, FuncNode, ClassNode
+from reef_cli.candidates.candidate import FuncNode, ClassNode
+from reef_cli.dependencies.dependency import DependencyNode
 
 CSTImportNode: type = ty.Union[cst.Import, cst.ImportFrom]
 
 
-class NodeExtractor(cst.CSTVisitor):
+class Extractor(cst.CSTVisitor):
     METADATA_DEPENDENCIES = (ParentNodeProvider, PositionProvider)
 
     def __init__(self, file_path: pathlib.Path, project_root: pathlib.Path) -> None:
         self.file_path = file_path
         self.project_root = project_root
-        self.imports: list[ImportNode] = []
+        self.imports: list[DependencyNode] = []
         self.functions: list[FuncNode] = []
         self.classes: list[ClassNode] = []
 
@@ -40,7 +41,7 @@ class NodeExtractor(cst.CSTVisitor):
 
     def visit_Import(self, node: cst.Import) -> None:
         self.imports.append(
-            ImportNode(
+            DependencyNode(
                 name=node.names[0].name.value,
                 origin=node.names[0].name.value,
                 file_path=self.file_path,
@@ -58,7 +59,6 @@ class NodeExtractor(cst.CSTVisitor):
     ) -> FuncNode:
         return FuncNode(
             name=node.name.value,
-            params=cst.Module([]).code_for_node(node.params),
             body=cst.Module([]).code_for_node(node.body),
             code=cst.Module([]).code_for_node(node),
             line_number_start=position.start.line,
@@ -104,13 +104,13 @@ class NodeExtractor(cst.CSTVisitor):
 
     def extract_importfrom_node(
         self, cst_node: CSTImportNode
-    ) -> ty.Iterator[ImportNode]:
+    ) -> ty.Iterator[DependencyNode]:
         """Extract ImportNode objects from a CST import node."""
 
         origin = self.get_origin(cst_node.module)
 
         if isinstance(cst_node.names, cst.ImportStar):
-            yield ImportNode(name="*", origin=origin, file_path=self.file_path, qualified_name=origin + ".*")
+            yield DependencyNode(name="*", origin=origin, file_path=self.file_path, qualified_name=origin + ".*")
             return
 
         for i, name in enumerate(cst_node.names):
@@ -121,7 +121,7 @@ class NodeExtractor(cst.CSTVisitor):
                 isinstance(name, cst.ImportAlias)
                 and getattr(name, "asname") is not None
             ):
-                yield ImportNode(
+                yield DependencyNode(
                     name=name_value,
                     origin=origin,
                     file_path=self.file_path,
@@ -130,7 +130,7 @@ class NodeExtractor(cst.CSTVisitor):
                 )
 
             else:
-                yield ImportNode(
+                yield DependencyNode(
                     name=name_value,
                     origin=origin,
                     file_path=self.file_path,

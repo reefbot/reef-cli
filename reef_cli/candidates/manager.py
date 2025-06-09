@@ -1,8 +1,8 @@
 import random
-from dep_graph.nodes import CandidateNode
+from reef_cli.candidates.candidate import CandidateNode
 
-from reef_cli.candidates.filters import CandidateFilter
-from reef_cli.candidates.scorers import CandidateScorer
+from reef_cli.candidates.filters import CandidateFilter, PassThroughFilter
+from reef_cli.candidates.scorers import CandidateScorer, AllScorer
 
 
 class CandidateManager:
@@ -33,4 +33,13 @@ class CandidateManager:
     def sample_one(self) -> "CandidateManager":
         weights = [weight for _, weight in self.normalised]
         candidates = [cand for cand, _ in self.normalised]
-        return random.choices(candidates, weights=weights, k=1)
+        return random.choices(candidates, weights=weights, k=1)[0]
+
+    @classmethod
+    def from_nothing(cls, candidates: list[CandidateNode]) -> "CandidateManager":
+        """Dummy function to allow me to link code together."""
+        return cls(
+            candidates=candidates,
+            filters=[PassThroughFilter()],
+            scorers=[AllScorer(weight=1)]
+        )

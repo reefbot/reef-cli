@@ -6,8 +6,9 @@ from pprint import pformat
 import libcst as cst
 from libcst.metadata import MetadataWrapper
 
-from .nodes import ImportNode, FuncNode, ClassNode
-from .node_extractor import NodeExtractor
+from reef_cli.candidates.candidate import CandidateNode
+from reef_cli.dependencies.dependency import DependencyNode
+from .extractor import Extractor
 from .utils import get_all_files
 
 logger = logging.getLogger(__name__)
@@ -15,8 +16,8 @@ logger = logging.getLogger(__name__)
 
 def scan_file(
     file_path: pathlib.Path, project_root: pathlib.Path
-) -> tuple[list[ty.Union[ClassNode, FuncNode]], list[ImportNode]]:
-    visitor = NodeExtractor(file_path=file_path, project_root=project_root)
+) -> tuple[list[CandidateNode], list[DependencyNode]]:
+    visitor = Extractor(file_path=file_path, project_root=project_root)
     with open(file_path, "rb") as f:
         syntax_tree = MetadataWrapper(cst.parse_module(f.read()))
         syntax_tree.visit(visitor)
@@ -40,7 +41,7 @@ def scan_file(
 
 def scan_project(
     project_root: pathlib.Path,
-) -> tuple[list[ty.Union[ClassNode, FuncNode]], list[ImportNode]]:
+) -> tuple[list[CandidateNode], list[DependencyNode]]:
     cands = []
     imports = []
     for file in get_all_files(root_dir=project_root, ext=".py"):

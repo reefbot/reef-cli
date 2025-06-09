@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 
-from .system_prompt import ANTHROPIC_SYSTEM_PROMPT
+from system_prompt import ANTHROPIC_SYSTEM_PROMPT
 
 load_dotenv()
 

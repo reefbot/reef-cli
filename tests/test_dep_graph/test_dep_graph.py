@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-from reef_cli.dep_graph.utils import get_all_files_extension
+from reef_cli.extraction.utils import get_all_files_extension
 
 
 def test_get_all_files_extension():
