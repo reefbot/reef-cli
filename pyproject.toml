@@ -6,11 +6,11 @@ build-backend = "hatchling.build"
 source = "vcs"
 
 [tool.hatch.build.targets.wheel]
-packages = ["reef-cli"]
+packages = ["reef_cli"]
 
 [project]
 dynamic = ["version"]
-name = "reef-cli"
+name = "reef_cli"
 requires-python = ">= 3.9"
 authors = [
   {name = "Tom Carter", email = "tomcarter017+reef-cli@gmail.com"},
@@ -31,8 +31,10 @@ classifiers = [
 ]
 dependencies = [
     "click",
-    "python-dotenv",
-    "langchain-anthropic"
+    "libcst",
+    "python-dotenv==1.1.0",
+    "langchain-anthropic",
+    "black>=25.1.0",
 ]
 
 [project.optional-dependencies]

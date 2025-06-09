@@ -32,10 +32,7 @@ def refactor(code: str, llm: ChatAnthropic) -> str:
                 "system",
                 ANTHROPIC_SYSTEM_PROMPT,
             ),
-            (
-                "user",
-                "<python_code>\n{PYTHON_CODE}\n</python_code>"
-            )
+            ("user", "<python_code>\n{PYTHON_CODE}\n</python_code>"),
         ]
     )
 
