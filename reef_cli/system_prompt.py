@@ -8,7 +8,7 @@ Follow these guidelines for refactoring:
 2. Enhance performance by optimizing algorithms or data structures where applicable.
 3. Apply appropriate design patterns or restructure the code to improve maintainability.
 4. Remove any redundant or unnecessary code.
-5. Ensure proper error handling and dummy_scripts validation.
+5. Ensure proper error handling and input validation.
 6. Use list comprehensions, generator expressions, or built-in functions where they can simplify the code.
 7. Break down complex functions into smaller, more manageable pieces if needed.
 
