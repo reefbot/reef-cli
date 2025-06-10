@@ -1,0 +1,19 @@
+# first go through files and extract all definitions and imports
+#    filter out imports from outside of the project
+# next go through files again
+#    find function calls
+#    find definition using imports
+#    add as node to function definition node
+
+
+# Scan through and find all local imports - these will act as a map for collecting dependent files for a selected function or class
+
+
+# To Do:
+# imports need qualified name
+# Select a refactor candidate (random selection for now)
+# retrieve all imports that match repr
+
+
+# Possible Additions
+# Scan for function and class usages and calls (difficult as need to consider dependency injection etc)

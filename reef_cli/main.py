@@ -3,11 +3,10 @@ import pathlib
 import random
 import click
 
-from dep_graph.nodes import ClassNode, FuncNode, ImportNode
-from reef_cli.llm_client import get_llm, refactor
-
 from reef_cli import __version__ as version
-from reef_cli.dep_graph.scan import scan_project
+from reef_cli.extraction.scan import scan_project
+from reef_cli.candidates.manager import CandidateManager
+from reef_cli.dependencies.linker import get_linked_dependencies
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -22,35 +21,19 @@ def select_candidate(candidates):
     return random.choice(candidates)
 
 
-def get_dependencies(
-    candidate, imports
-) -> list[ImportNode]:
-
-    dependencies = []
-    for imp in imports:
-
-        # special treatment for * imports
-        # match the base of qualified name
-        if imp.qualified_name[-1] == "*":
-            if ".".join(imp.qualified_name.split(".")[-1]) == ".".join(candidate.qualified_name.split(".")[-1]):
-                dependencies.append(imp)
-
-        if imp.qualified_name == candidate.qualified_name:
-            dependencies.append(imp)
-
-    return dependencies
-
-
 def reef(directory: pathlib.Path, log_level: str) -> None:
     logger.setLevel(log_level)
 
     candidates, imports = scan_project(directory)
 
-    candidate = select_candidate(candidates)
-    print("\n\nCandidate:")
+    candidate_manager = CandidateManager.from_nothing(candidates)
+    candidate = candidate_manager.filter().score().normalise().sample_one()
+
+    print("\n\nCand:")
     print(candidate)
 
-    deps = get_dependencies(candidate, imports)
+
+    deps = get_linked_dependencies(candidate, imports)
     print("\n\nDeps:")
     print(deps)
 
